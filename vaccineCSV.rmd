@@ -1,0 +1,52 @@
+---
+title: "vaccine"
+author: "Dr. J"
+date: '2022-07-02'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+require(tidyverse)
+require(tigerstats)
+source("fisherXY.R")
+
+myData = read.csv('clinicalTrial.csv')
+```
+
+
+
+
+### Plot barplots
+
+#### Plot barplots tigerstats way
+
+```{r}
+barchartGC(~infected + vaxStatus,data=myData)
+barchartGC(~infected + vaxStatus,data=myData, type="percent")
+
+```
+
+
+
+### Numerical Summaries  
+
+```{r}
+table1 <- xtabs(~infected + vaxStatus,data=myData)
+rowPerc(table1)
+colPerc(table1)
+```
+
+
+
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+fisher.test(table1, simulate.p.value = TRUE)
+```
+
+```{r}
+fisherXY(myData$infected,myData$vaxStatus, printAll = TRUE)
+```
+
